@@ -4,20 +4,46 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // The `/api/products` endpoint
 
 // get all products
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
+  try{
+    const productData = await Category.findAll(
+      { include: [ Category, { model: Tag, through: ProductTag } ]}
+    )
+
+    if (!productData) {
+      res.status(404).json({ message: `That category doesn't exist.`});
+      return;
+    }
+    res.status(200).json(productData);
+  } catch(err) {
+    res.status(500).json(err);
+  }
   
 });
 
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
+  try{
+    const productData = await Product.findByPk(req.params.id, {
+      include: [ Category, { model: Tag, through: ProductTag }],
+    });
+
+    if (!productData) {
+      res.status(404).json({ message: `That product doesn't exist.`});
+      return;
+    }
+    res.status(200).json(productData);
+  } catch(err) {
+    res.status(500).json(err);
+  }
 });
 
 // create new product
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   /* req.body should look like this...
     {
       product_name: "Basketball",
@@ -90,7 +116,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
 });
 
