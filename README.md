@@ -1,4 +1,4 @@
-<h1 align="center"> Employee Manager App <h1>
+<h1 align="center"> Commerce Server Side App <h1>
 
 ![badge](https://img.shields.io/badge/license-MIT-blue)
 
@@ -18,6 +18,8 @@ git clone </br>
 cd Commerce-server-side</br>
 npm init --y </br>
 npm i </br>
+Change .env file to match your Username/Password </br>
+npm run seed </br>
 npm start </br>
 
 ## Contributing
